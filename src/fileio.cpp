@@ -51,14 +51,14 @@ bool FileIO::getIMUdata(const string &imufile, vector<IMU> &imu_data, bool is_im
 
         // 此处经过了轴系调整
         imu.dvel << -stod(splits[7]), stod(splits[8]), -stod(splits[6]);
-        imu.dvel *= acc_scale * freq; // 此时imu.dvel的值是加速度，而不是速度增量
+        imu.dvel *= acc_scale; // 此时imu.dvel的值是速度增量
 
         imu.dtheta << -stod(splits[10]), stod(splits[11]), -stod(splits[9]);
-        imu.dtheta *= gry_scale * freq; // 此时的imu.dtheta的值是角速度，不是角度增量
+        imu.dtheta *= gry_scale; // 此时的imu.dtheta的值角度增量
 
-        if (is_imu_increment) {
-            imu.dvel *= imu.dt;   // 转换为速度增量
-            imu.dtheta *= imu.dt; // 转换为角度增量
+        if (!is_imu_increment) {
+            imu.dvel *= freq;   // 转换为加速度
+            imu.dtheta *= freq; // 转换为角速度
         }
 
         imu_data.emplace_back(imu);

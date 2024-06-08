@@ -61,10 +61,7 @@ int main(int argc, char *argv[]) {
     IMU imupre; // k-1 时刻IMU输出数据
     IMU imucur; // k 时刻IMU输出数据
 
-    imupre = imu_data[imu_idx - 1];
-
     fstream fout("result.txt", ios::out);
-
     cout << "\n***开始计算结果：***\n" << endl;
 
     for (; imu_idx < imu_data.size(); imu_idx++) {
@@ -83,8 +80,6 @@ int main(int argc, char *argv[]) {
                 continue;
             }
             INSMech::insMech(pvapre, pvacur, imupre, imucur);
-            // pvapre = pvacur;
-            // imupre = imucur;
             cout.flags(ios::fixed);
             cout.precision(8);
             cout << imucur.time << " " << pvacur.pos[0] * R2D << " " << pvacur.pos[1] * R2D << " " << pvacur.pos[2]
